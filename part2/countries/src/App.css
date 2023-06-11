@@ -1,0 +1,8 @@
+.flag-container {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .flag-emoji {
+    font-size: 200px;
+  }
