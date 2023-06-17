@@ -64,7 +64,7 @@ const App = () => {
       .then(initialstate => {
         setPersons(initialstate)
       })
-  }, []);
+  }, [])
 
   const handleNChange = (event) => {
     setNewName(event.target.value)
@@ -79,7 +79,7 @@ const App = () => {
   }
 
   const handleDelete = id => {
-    const person = persons.find(person => person.id === id);
+    const person = persons.find(person => person.id === id)
 
     if (window.confirm(`Delete ${person.name}?`)) {
       service
@@ -95,7 +95,7 @@ const App = () => {
     const checkPerson = persons.find(person=> person.name  === newName)
     if (checkPerson){
       if (window.confirm(`${newName} is already added to the phonebook. Replace the old number with a new one?`)) {
-        const updatePerson = { ...checkPerson, number: newNumber }; 
+        const updatePerson = { ...checkPerson, number: newNumber } 
         service
           .update(checkPerson.id, updatePerson)
           .then(updateInfo => {
@@ -123,15 +123,15 @@ const App = () => {
       const personObject = {
       name: newName,
       number: newNumber,
-    };
+    }
   
     service
       .create(personObject)
       .then((save) => {
         
-        setPersons([...persons, save]);
-        setNewName('');
-        setNewNumber('');
+        setPersons([...persons, save])
+        setNewName('')
+        setNewNumber('')
         setMessage(`Added ${personObject.name}`)
         setTimeout(() => {
           setMessage(null)
