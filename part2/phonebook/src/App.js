@@ -109,10 +109,8 @@ const App = () => {
               setMessage(null)
             }, 5000)
           })
-          .catch (error => {
-            setMessage(
-              `Information of ${updatePerson.name} has already been removed from server`
-            )
+          .catch((error) => {
+            setMessage(error.response.data.error);
             setTimeout(() => {
               setMessage(null)
             }, 5000)
@@ -133,6 +131,12 @@ const App = () => {
         setNewName('')
         setNewNumber('')
         setMessage(`Added ${personObject.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+      .catch((error) => {
+        setMessage(error.response.data.error);
         setTimeout(() => {
           setMessage(null)
         }, 5000)
