@@ -11,7 +11,10 @@ app.use(cors())
 app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+module.exports = app;
+
+const server = app.listen(3003, () => {
+  console.log('Server running on port 3003');
+});
+
+module.exports = server
