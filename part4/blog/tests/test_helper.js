@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 const initialBlogs = [
   {
-    _id: "1",
+    _id: "5a422a851b54a676234d17f7",
     title: "blog1",
     author: "author1",
     url: "url1",
@@ -11,7 +11,7 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: "2",
+    _id: "5a422aa71b54a676234d17f8",
     title: "blog2",
     author: "author1",
     url: "url2",
@@ -19,7 +19,7 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: "3",
+    _id: "5a422b891b54a676234d17fa",
     title: "blog3",
     author: "author1",
     url: "url3",
@@ -27,7 +27,7 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: "4",
+    _id: "5a422ba71b54a676234d17fb",
     title: "blog4",
     author: "author2",
     url: "url4",
@@ -35,7 +35,7 @@ const initialBlogs = [
     __v: 0,
   },
   {
-    _id: "5",
+    _id: "5a422bc61b54a676234d17fc",
     title: "blog5",
     author: "author3",
     url: "url5",

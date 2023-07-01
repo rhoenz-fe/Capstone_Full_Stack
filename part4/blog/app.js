@@ -1,14 +1,14 @@
-const config = require("./util/config")
+const config = require("./utils/config")
 const express = require("express")
 require("express-async-errors")
 const app = express()
 const cors = require("cors")
-const logger = require("./util/logger")
-const middleware = require("./util/middleware")
+const logger = require("./utils/logger")
+const middleware = require("./utils/middleware")
 const mongoose = require("mongoose")
-const blogsRouter = require("./controller/blog")
-const usersRouter = require("./controller/user")
-const loginRouter = require("./controller/login")
+const blogsRouter = require("./controllers/blog")
+const usersRouter = require("./controllers/user")
+const loginRouter = require("./controllers/login")
 
 const url = config.MONGODB_URI
 logger.info("connecting to MongoDB")
@@ -26,6 +26,7 @@ app.use(middleware.tokenExtractor)
 app.use("/api/blogs", middleware.userExtractor, blogsRouter)
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

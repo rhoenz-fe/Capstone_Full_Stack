@@ -1,6 +1,6 @@
-const config = require("../util/config")
+const config = require("../utils/config")
 const loginRouter = require("express").Router()
-const User = require("../model/user")
+const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 

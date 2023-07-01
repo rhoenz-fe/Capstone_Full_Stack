@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
-const config = require("../util/config")
+const config = require("../utils/config")
 const express = require('express')
-const Blog = require('../model/blog')
+const Blog = require('../models/blog')
+const User = require('../models/user')
 const blogsRouter = express.Router()
 
 
@@ -13,13 +14,7 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const { title, author, url, likes } = request.body
-
-  if (!title || !url) {
-    return response
-      .status(400)
-      .json({ error: 'missing title or url' })
-  }
+  const body = request.body
 
   const token = request.token
   const decodedToken = jwt.verify(token, config.SECRET)
@@ -30,26 +25,26 @@ blogsRouter.post('/', async (request, response) => {
   }
 
   const user = request.user
-  const blog = new Blog({
-    title,
-    author,
-    url,
-    likes,
+  const blog = await new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
     user: user._id,
   })
 
-  await blog.save()
+  const save = await blog.save()
 
-  user.blogs = user.blogs.concat(blog._id)
+  user.blogs = user.blogs.concat(save._id)
   await user.save()
 
   response
     .status(201)
-    .json(blog)
+    .json(save.toJSON())
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const { id } = request.params
+  const id = request.params.id
 
   const token = request.token
   const decodedToken = jwt.verify(token, config.SECRET)
@@ -61,14 +56,13 @@ blogsRouter.delete('/:id', async (request, response) => {
 
   try {
     const blog = await Blog.findById(id)
+    const user = request.user
 
     if (!blog) {
       return response
         .status(404)
         .json({ error: 'Blog not found' })
     }
-
-    const user = request.user
 
     if (blog.user.toString() !== user._id.toString()) {
       return response
@@ -87,20 +81,14 @@ blogsRouter.delete('/:id', async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-  const { id } = request.params
-  const { title, author, url, likes } = request.body
-
-  if (!title || !url) {
-    return response
-      .status(400)
-      .json({ error: 'Title or URL is missing' })
-  }
+  const id = request.params.id
+  const body = request.body
 
   const updatedBlog = {
-    title,
-    author,
-    url,
-    likes,
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
   }
 
   const result = await Blog
