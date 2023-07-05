@@ -31,7 +31,7 @@ blogsRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user._id,
-  })
+  }).populate("user", { username: 1, name: 1 })
 
   const save = await blog.save()
 
@@ -54,30 +54,23 @@ blogsRouter.delete('/:id', async (request, response) => {
       .json({ error: 'Token missing or invalid' })
   }
 
-  try {
-    const blog = await Blog.findById(id)
-    const user = request.user
 
-    if (!blog) {
-      return response
-        .status(404)
-        .json({ error: 'Blog not found' })
-    }
+  const blog = await Blog.findById(id)
+  const user = request.user
 
-    if (blog.user.toString() !== user._id.toString()) {
-      return response
-        .status(401)
-        .json({ error: 'Unauthorized to delete' })
-    }
-
-    await Blog
-      .findByIdAndDelete(id)
-    response
-      .status(204)
-      .end()
-  } catch (error) {
-    next(error)
+  if (!blog) {
+    return response
+      .status(404)
+      .json({ error: 'Blog not found' })
   }
+
+  if (blog.user.toString() === user.id.toString()) {
+    await Blog.deleteOne({ _id: id });
+    response.sendStatus(204).end();
+  } else {
+    response.status(401).json({ error: "unauthorized operation" });
+  }
+
 })
 
 blogsRouter.put('/:id', async (request, response) => {
